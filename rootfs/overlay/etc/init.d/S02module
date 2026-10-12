@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# load the kernel modules at startup
+#
+
+# UDOO: fixed MAC addresses, so the laptop always sees the same
+# interface name (enx020000000601) instead of a random one
+G_ETHER_ARGS="dev_addr=02:00:00:00:06:02 host_addr=02:00:00:00:06:01"
+
+case "$1" in
+  start)
+	printf "Loading kernel modules : "
+	# modprobe needs the modules.dep index - build it if missing
+	[ -f /lib/modules/$(uname -r)/modules.dep ] || /sbin/depmod
+	/sbin/modprobe g_ether $G_ETHER_ARGS
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+  stop)
+	printf "Unloading kernel modules : "
+	/sbin/rmmod g_ether
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+  restart|reload)
+	"$0" stop
+	"$0" start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

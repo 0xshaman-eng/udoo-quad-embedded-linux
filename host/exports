@@ -1,0 +1,2 @@
+# Line for /etc/exports on the host (laptop) - shares the NFS root filesystem
+/srv/nfs/udoo 192.168.7.0/24(rw,sync,no_root_squash,no_subtree_check)

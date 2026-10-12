@@ -1,0 +1,42 @@
+# Downloaded source archives
+*.tar
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.zip
+
+# Source trees (rebuild them with scripts/)
+u-boot-*/
+linux-*/
+busybox-*/
+build/
+work/
+
+# Build outputs - publish these in a GitHub Release instead
+SPL
+u-boot.img
+u-boot*.bin
+u-boot*.imx
+zImage
+uImage
+Image
+*.dtb
+*.dtbo
+*.o
+*.ko
+*.img
+
+# Generated root filesystems
+RFS_*/
+rootfs-build/
+
+# Compiled apps
+apps/*/build/
+apps/hello/hello
+
+# Editor and OS files
+*.swp
+*~
+.vscode/
+.idea/
+.DS_Store

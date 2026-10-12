@@ -1,0 +1,17 @@
+# BusyBox init configuration
+# Format: <id>::<action>:<process>
+# An empty <id> means "use the console given in the kernel bootargs",
+# so this file works on any board (UDOO: ttymxc1, BeagleBone: ttyS0).
+
+# Boot: run the startup script once (mounts filesystems, starts S?? services)
+::sysinit:/etc/init.d/rcS
+
+# Start a shell on the console (asks you to press Enter first)
+::askfirst:-/bin/sh
+
+# Restart init if asked
+::restart:/sbin/init
+
+# Shutdown: stop services in reverse order, then unmount filesystems
+::shutdown:/etc/init.d/rcK
+::shutdown:/bin/umount -a -r

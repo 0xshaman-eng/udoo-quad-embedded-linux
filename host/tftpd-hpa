@@ -1,0 +1,5 @@
+# Example /etc/default/tftpd-hpa (TFTP server settings on the host)
+TFTP_USERNAME="tftp"
+TFTP_DIRECTORY="/tftpboot"
+TFTP_ADDRESS=":69"
+TFTP_OPTIONS="--secure"

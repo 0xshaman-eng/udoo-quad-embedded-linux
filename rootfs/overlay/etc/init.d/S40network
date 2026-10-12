@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# Start the network....
+#
+
+# Debian ifupdown needs the /run/network lock directory
+mkdir -p /run/network
+
+case "$1" in
+  start)
+	printf "Starting network: "
+	# UDOO: the rootfs is on NFS, so ifup's old state file survives reboots.
+	# Remove it, or ifup thinks the interfaces are already up.
+	rm -f /var/run/ifstate
+	# UDOO: the kernel already gave lo 127.0.0.1 (ip= boot argument).
+	# Clear it so ifup does not fail with "File exists".
+	ip addr flush dev lo 2>/dev/null
+	# UDOO: give g_ether (loaded by S02module) a moment to create usb0
+	[ -e /sys/class/net/usb0 ] || sleep 1
+	/sbin/ifup -a
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+  stop)
+	printf "Stopping network: "
+	/sbin/ifdown -a
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+  restart|reload)
+	"$0" stop
+	"$0" start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

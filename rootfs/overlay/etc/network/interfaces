@@ -1,0 +1,27 @@
+# /etc/network/interfaces - read by ifup -a / ifdown -a (S40network)
+# Only interfaces marked "auto" are started and stopped.
+
+# ---------- Loopback ----------
+auto lo
+iface lo inet loopback
+
+# ---------- USB gadget Ethernet: OTG cable to the laptop ----------
+# The g_ether driver is loaded by S02module
+auto usb0
+iface usb0 inet static
+    address 192.168.6.2
+    netmask 255.255.255.0
+    network 192.168.6.0
+    broadcast 192.168.6.255
+
+# ---------- Ethernet: cable to the laptop (TFTP / NFS) ----------
+# NOT "auto" on purpose: the root filesystem is mounted over eth0, and the
+# kernel already configured it (ip= boot argument). If ifdown -a stopped it
+# at shutdown, the board would lose its root filesystem.
+# For standalone (SD card) boot later, add "auto eth0" above this line.
+iface eth0 inet static
+    address 192.168.7.2
+    netmask 255.255.255.0
+    network 192.168.7.0
+    broadcast 192.168.7.255
+    gateway 192.168.7.1
